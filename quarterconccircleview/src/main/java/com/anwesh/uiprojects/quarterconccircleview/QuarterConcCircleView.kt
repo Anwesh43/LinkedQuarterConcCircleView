@@ -61,4 +61,32 @@ class QuarterConcCircleView(ctx : Context) : View(ctx) {
             }
         }
     }
+
+    data class Animator(var animated : Boolean = false) {
+
+        fun animate(cb : () -> Unit, viewcb : () -> Unit) {
+            if (animated) {
+                cb()
+                try {
+                    Thread.sleep(50)
+                    viewcb()
+                } catch(ex : Exception) {
+
+                }
+            }
+        }
+
+        fun start(cb : () -> Unit) {
+            if (!animated) {
+                animated = true
+                cb()
+            }
+        }
+
+        fun stop() {
+            if (animated) {
+                animated = false
+            }
+        }
+    }
 }
