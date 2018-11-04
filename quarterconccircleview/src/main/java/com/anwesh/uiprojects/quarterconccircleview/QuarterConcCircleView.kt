@@ -64,8 +64,14 @@ class QuarterConcCircleView(ctx : Context) : View(ctx) {
 
     private val renderer : Renderer = Renderer(this)
 
+    var onAnimationCompleteListener : OnAnimationCompleteListener? = null
+
     override fun onDraw(canvas : Canvas) {
         renderer.render(canvas, paint)
+    }
+
+    fun addOnAnimationCompleteListener(onComplete : (Int) -> Unit, onReset : (Int) -> Unit) {
+        onAnimationCompleteListener = OnAnimationCompleteListener(onComplete, onReset)
     }
 
     override fun onTouchEvent(event : MotionEvent) : Boolean {
@@ -206,6 +212,10 @@ class QuarterConcCircleView(ctx : Context) : View(ctx) {
             animator.animate({
                 qcc.update {i, scl ->
                     animator.stop()
+                    when (scl) {
+                        0f -> view.onAnimationCompleteListener?.onReset?.invoke(i)
+                        1f -> view.onAnimationCompleteListener?.onComplete?.invoke(i)
+                    }
                 }
             }) {
                 view.invalidate()
@@ -228,4 +238,6 @@ class QuarterConcCircleView(ctx : Context) : View(ctx) {
             return view
         }
     }
+
+    data class OnAnimationCompleteListener(var onComplete : (Int) -> Unit, var onReset : (Int) -> Unit)
 }
