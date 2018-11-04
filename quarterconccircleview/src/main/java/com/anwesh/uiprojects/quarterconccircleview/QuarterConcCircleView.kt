@@ -225,7 +225,7 @@ class QuarterConcCircleView(ctx : Context) : View(ctx) {
         fun create(activity : Activity) : QuarterConcCircleView {
             val view : QuarterConcCircleView = QuarterConcCircleView(activity)
             activity.setContentView(view)
-            return view 
+            return view
         }
     }
 }
