@@ -220,4 +220,12 @@ class QuarterConcCircleView(ctx : Context) : View(ctx) {
             }
         }
     }
+
+    companion object {
+        fun create(activity : Activity) : QuarterConcCircleView {
+            val view : QuarterConcCircleView = QuarterConcCircleView(activity)
+            activity.setContentView(view)
+            return view 
+        }
+    }
 }
