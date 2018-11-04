@@ -30,15 +30,15 @@ fun Canvas.drawQCCNode(i : Int, scale : Float, paint : Paint) {
     val w : Float = width.toFloat()
     val h : Float = height.toFloat()
     val gap : Float = w / (nodes + 1)
-    paint.strokeWidth = Math.min(w, h) / 60
+    paint.strokeWidth = Math.min(w, h) / 120
     paint.strokeCap = Paint.Cap.ROUND
     paint.color = color
     paint.style = Paint.Style.STROKE
     val sc1 : Float = scale.divideScale(0, 2)
     val sc2 : Float = scale.divideScale(1, 2)
-    val size : Float = gap / 3
-    val lGap : Float = size / lines
-    val dr : Float = size / 2
+    val size : Float = gap / 2
+    val lGap : Float = size / (lines)
+    val dr : Float = gap / 2
     val deg : Float = 360f / lines
     save()
     translate(gap + gap * i, h/2)
@@ -48,7 +48,7 @@ fun Canvas.drawQCCNode(i : Int, scale : Float, paint : Paint) {
         val r : Float = sr + (dr - sr) * sc2
         save()
         rotate(deg * j)
-        drawArc(RectF(-r, -r, r, r), 0f, 360f * sc, false, paint)
+        drawArc(RectF(-r, -r, r, r), 0f, deg * sc, false, paint)
         restore()
     }
     restore()
