@@ -18,7 +18,42 @@ val nodes : Int = 5
 
 val lines : Int = 4
 
+val color : Int = Color.parseColor("#43A047")
+
 val SCALE_GAP : Float = 0.05f
+
+fun Int.getInverse() : Float = 1f/this
+
+fun Float.divideScale(i : Int, n : Int) : Float = Math.min(n.getInverse(), Math.max(0f, this - n.getInverse() * i)) * n
+
+fun Canvas.drawQCCNode(i : Int, scale : Float, paint : Paint) {
+    val w : Float = width.toFloat()
+    val h : Float = height.toFloat()
+    val gap : Float = w / (nodes + 1)
+    paint.strokeWidth = Math.min(w, h) / 60
+    paint.strokeCap = Paint.Cap.ROUND
+    paint.color = color
+    paint.style = Paint.Style.STROKE
+    val sc1 : Float = scale.divideScale(0, 2)
+    val sc2 : Float = scale.divideScale(1, 2)
+    val size : Float = gap / 3
+    val lGap : Float = size / lines
+    val dr : Float = size / 2
+    val deg : Float = 360f / lines
+    save()
+    translate(gap + gap * i, h/2)
+    for (j in 0..(lines - 1)) {
+        val sr : Float = (j + 1) * lGap
+        val sc : Float = sc1.divideScale(j, lines)
+        val r : Float = sr + (dr - sr) * sc2
+        save()
+        rotate(deg * j)
+        drawArc(RectF(-r, -r, r, r), 0f, 360f * sc, false, paint)
+        restore()
+    }
+    restore()
+}
+
 fun Float.scaleFactor() : Float = Math.floor(this/0.5).toFloat()
 
 fun Float.scaleMultiplier(dir : Float) : Float = (scaleFactor()+ (1 - scaleFactor()) / lines) * dir * SCALE_GAP
