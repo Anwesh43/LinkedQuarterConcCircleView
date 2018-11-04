@@ -192,4 +192,30 @@ class QuarterConcCircleView(ctx : Context) : View(ctx) {
             curr.startUpdating(cb)
         }
     }
+
+    data class Renderer(var view : QuarterConcCircleView) {
+        private var qcc : QuarterConcCircle = QuarterConcCircle(0)
+
+        private val animator : Animator = Animator()
+
+        fun render(canvas : Canvas, paint : Paint) {
+            canvas.drawColor(Color.parseColor("#BDBDBD"))
+            qcc.draw(canvas, paint)
+            animator.animate({
+                qcc.update {i, scl ->
+                    animator.stop()
+                }
+            }) {
+                view.invalidate()
+            }
+        }
+
+        fun handleTap() {
+            qcc.startUpdating {
+                animator.start {
+                    view.postInvalidate()
+                }
+            }
+        }
+    }
 }
